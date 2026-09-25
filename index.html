@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zoom Meeting Transcripts</title>
+<meta name="description" content="Speaker-attributed transcripts of public council, board and court meetings held on Zoom, with speakers identified from the on-screen name tile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="ringmark" aria-hidden="true"></span>Zoom Meeting Transcripts</a>
+    <nav class="nav" aria-label="Site">
+      <a href="./" aria-current="page">Overview</a>
+      <a href="explore.html">Explore</a>
+      <a href="#data">Get the data</a>
+      <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">Pipeline</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="eyebrow">Public meetings · named speakers</div>
+    <h1>Who said what in thousands of hours of public meetings</h1>
+    <p class="lede">Transcripts of city councils, school boards and courts that met on Zoom
+    and posted the recordings to YouTube. Every turn is attributed to a named person, read
+    from the name Zoom prints on the active speaker's tile, and linked to the same person
+    across all of a body's meetings.</p>
+    <div class="cta">
+      <a class="btn primary" href="explore.html">Explore the meetings</a>
+      <a class="btn" href="#data">Get the data</a>
+    </div>
+    <div class="figures" id="figures" aria-live="polite">
+      <div class="figure"><div class="n" id="f-collections">–</div><div class="l">collections</div></div>
+      <div class="figure"><div class="n" id="f-meetings">–</div><div class="l">meetings</div></div>
+      <div class="figure"><div class="n" id="f-hours">–</div><div class="l">hours of speech</div></div>
+      <div class="figure"><div class="n" id="f-speakers">–</div><div class="l">named speakers</div></div>
+      <div class="figure"><div class="n" id="f-turns">–</div><div class="l">speaker turns</div></div>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>How the transcripts were made</h2>
+      <p class="intro">Audio alone can tell when a different person starts talking, but not who
+      they are. In Zoom's gallery view, the active speaker's tile is outlined in green and
+      labelled with their name. The pipeline reads that name once a second and aligns it with
+      a Whisper transcript. It runs as four scripts, all in the
+      <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">pipeline repository</a>.</p>
+      <div class="steps">
+        <div class="step"><span class="file">ocr.py</span><h3>Read the name tile</h3><p>Find the highlighted tile in each sampled frame and read its name label with PaddleOCR.</p><span class="io">video → raw names, 1 per second</span></div>
+        <div class="step"><span class="file">transcribe.py</span><h3>Transcribe the audio</h3><p>Whisper large-v2 for the words, pyannote to group the speech into voices.</p><span class="io">video → text + voice clusters</span></div>
+        <div class="step"><span class="file">clean_ocr.py</span><h3>Turn names into people</h3><p>Strip titles, roles and OCR damage; link spellings of one person across every meeting of a body.</p><span class="io">raw names → linked identities</span></div>
+        <div class="step"><span class="file">merge.py</span><h3>Attribute every turn</h3><p>Name each stretch of speech from its voice and the tile on screen at that moment.</p><span class="io">text + identities → transcript</span></div>
+      </div>
+      <p class="order">Order: <span class="mono">ocr.py</span> and <span class="mono">transcribe.py</span>
+      run independently on each video. <span class="mono">clean_ocr.py</span> runs once over a whole
+      collection, because it links people across meetings. <span class="mono">merge.py</span> runs last.
+      Method and measurements: <a href="https://github.com/smerrillunc/zoom-speaker-pipeline/blob/main/docs/METHOD.md">METHOD.md</a>.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>What a transcript contains</h2>
+      <p class="intro">One JSON file per meeting: a list of turns. Each turn keeps the cleaned,
+      linked speaker and the name exactly as it was read off the screen, so the cleaning can
+      be checked or redone.</p>
+      <div class="two">
+<pre class="code"><span class="c">// data/hidalgo_ccl_9/-OPax3iQV50.json</span>
+[
+  {
+    <span class="k">"start"</span>: 3375.36,
+    <span class="k">"end"</span>: 3384.72,
+    <span class="k">"speaker"</span>: <span class="s">"patriciaocanaolivarez"</span>,
+    <span class="k">"speaker_name"</span>: <span class="s">"Judge Patricia O'Caña-Olivarez"</span>,
+    <span class="k">"ocr_label"</span>: <span class="s">"Judge Patricia O'Ca.."</span>,
+    <span class="k">"text"</span>: <span class="s">"Okay. So let's come back on April the 5th at 930. ..."</span>
+  },
+  ...
+]</pre>
+        <table class="fields">
+          <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>start, end</td><td>Seconds from the start of the YouTube video.</td></tr>
+            <tr><td>speaker</td><td>The linked identity: one key per person across all of a collection's meetings. <span class="mono">Other</span> means no name, or a room, device or organisation tile.</td></tr>
+            <tr><td>speaker_name</td><td>That person's display name.</td></tr>
+            <tr><td>ocr_label</td><td>The name as OCR read it during the turn, before any cleaning.</td></tr>
+            <tr><td>text</td><td>What was said (Whisper large-v2).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="data">
+    <div class="wrap">
+      <h2>Get the data</h2>
+      <p class="intro">Everything the site shows is plain JSON in the
+      <a href="https://github.com/smerrillunc/zoom-meeting-transcripts">site repository</a>.
+      Clone it, or fetch single files from this site.</p>
+      <div class="two">
+<pre class="code"><span class="c"># everything</span>
+git clone https://github.com/smerrillunc/zoom-meeting-transcripts
+
+<span class="c"># layout</span>
+data/collections.json            <span class="c"># every collection, with statistics</span>
+data/&lt;collection&gt;/meetings.json  <span class="c"># its meetings: id, date, title, length</span>
+data/&lt;collection&gt;/&lt;video id&gt;.json <span class="c"># one transcript</span>
+data/&lt;collection&gt;/registry.json  <span class="c"># who is who, and how names were linked</span></pre>
+<pre class="code"><span class="k">import</span> json, pathlib
+
+root = pathlib.Path(<span class="s">"zoom-meeting-transcripts/data"</span>)
+<span class="k">for</span> c <span class="k">in</span> json.loads((root / <span class="s">"collections.json"</span>).read_text()):
+    <span class="k">for</span> m <span class="k">in</span> json.loads((root / c[<span class="s">"slug"</span>] / <span class="s">"meetings.json"</span>).read_text()):
+        turns = json.loads((root / c[<span class="s">"slug"</span>] / f<span class="s">"{m['id']}.json"</span>).read_text())
+        <span class="c"># the video: https://www.youtube.com/watch?v={m['id']}</span></pre>
+      </div>
+      <p class="order"><span class="mono">registry.json</span> lists every person in a collection
+      with each spelling that was linked to them, the rule that linked it, and every link the
+      pipeline refused. Three older collections (Waipa District Council, DC Court of Appeals,
+      Albemarle County School Board) predate the raw-OCR record. They keep their original
+      speaker labels, with <span class="mono">speaker_name</span> and <span class="mono">ocr_label</span> empty.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Collections</h2>
+      <p class="intro">Each collection is one public body's meetings, from the period when it met
+      on Zoom in gallery view.</p>
+      <div class="tablewrap">
+        <table class="list">
+          <thead><tr><th>Collection</th><th>Type</th><th>Region</th><th class="num">Meetings</th><th class="num">Hours</th><th>Dates</th></tr></thead>
+          <tbody id="collections"><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="note"><b>Please read before use.</b> These are recordings of public meetings
+      that the bodies themselves published. Court collections name private parties, including
+      criminal defendants; some hearings concern family law and children, and dates of birth
+      and phone numbers are sometimes spoken aloud. Each collection's page lists what applies
+      to it. Use the data for research, and do not use it to identify or contact private
+      individuals. To request removal of a meeting, open an issue on the
+      <a href="https://github.com/smerrillunc/zoom-meeting-transcripts/issues">repository</a>.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Transcripts produced with the
+  <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">zoom-speaker-pipeline</a>.
+  Collected for <i>Point of Order: Action-Aware LLM Persona Modeling for Realistic Civic
+  Simulation</i>. Videos remain on their publishers' YouTube channels.</div>
+</footer>
+
+<script>
+(async () => {
+  const fmt = (n) => n.toLocaleString("en-US");
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const year = (d) => (d ? d.slice(0, 7) : "");
+  let cols;
+  try { cols = await (await fetch("data/collections.json")).json(); }
+  catch { document.getElementById("collections").innerHTML = '<tr><td colspan="6" class="muted">Could not load data/collections.json.</td></tr>'; return; }
+  const sum = (k) => cols.reduce((a, c) => a + (c[k] || 0), 0);
+  document.getElementById("f-collections").textContent = fmt(cols.length);
+  document.getElementById("f-meetings").textContent = fmt(sum("meetings"));
+  document.getElementById("f-hours").textContent = fmt(Math.round(sum("hours")));
+  document.getElementById("f-speakers").textContent = fmt(sum("speakers"));
+  document.getElementById("f-turns").textContent = fmt(sum("turns"));
+  document.getElementById("collections").innerHTML = cols.map((c) => `<tr>
+    <td><a href="explore.html#/${encodeURIComponent(c.slug)}">${esc(c.name)}</a></td>
+    <td>${esc(c.type || c.category || "")}</td><td>${esc(c.region || "")}</td>
+    <td class="num">${fmt(c.meetings)}</td><td class="num">${fmt(Math.round(c.hours))}</td>
+    <td>${esc(year(c.first))}${c.last && c.last !== c.first ? " – " + esc(year(c.last)) : ""}</td></tr>`).join("");
+})();
+</script>
+</body>
+</html>
