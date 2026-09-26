@@ -89,6 +89,12 @@
       <div class="crumbs"><a href="#/">All collections</a><span>›</span><span>${esc(c.name)}</span></div>
       <div class="pagehead"><h1>${esc(c.name)}</h1><span class="sub">${esc([c.type, c.region].filter(Boolean).join(" · "))}</span></div>
       ${c.description ? `<p class="desc">${esc(c.description)}</p>` : ""}
+      ${c.meetings_about || c.participants || c.decisions ? `<dl class="facts">
+        ${c.meetings_about ? `<div><dt>The meetings</dt><dd>${esc(c.meetings_about)}</dd></div>` : ""}
+        ${c.participants ? `<div><dt>Who takes part</dt><dd>${esc(c.participants)}</dd></div>` : ""}
+        ${c.decisions ? `<div><dt>What they decide</dt><dd>${esc(c.decisions)}</dd></div>` : ""}
+      </dl>` : ""}
+      ${c.notes ? `<p class="collnotes"><b>Notes.</b> ${esc(c.notes)}</p>` : ""}
       <div class="chips">
         <span class="chip">${fmt(c.meetings)} meetings</span><span class="chip">${fmt(Math.round(c.hours))} hours</span>
         <span class="chip">${fmt(c.speakers)} speakers</span>
