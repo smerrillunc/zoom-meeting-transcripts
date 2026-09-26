@@ -169,3 +169,12 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var
 .empty { padding: 20px 14px; color: var(--muted); }
 .loading { padding: 40px 0; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* collection facts: what the meetings are, who takes part, what they decide */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; max-width: 1100px; }
+@media (max-width: 900px) { .facts { grid-template-columns: 1fr; } }
+.facts div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.facts dt { font: 600 12px/1 var(--ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.facts dd { margin: 0; font-size: 15px; line-height: 1.55; }
+.collnotes { max-width: 80ch; margin-top: 14px; font-size: 14px; color: var(--muted); }
+.collnotes b { color: var(--ink); }
