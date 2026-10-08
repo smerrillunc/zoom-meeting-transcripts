@@ -5,10 +5,10 @@ Zoom and published on YouTube. Speakers are identified from the name Zoom prints
 the active speaker's tile, and linked to the same person across all of a body's
 meetings.
 
-**Browse:** https://smerrillunc.github.io/zoom-meeting-transcripts/ (overview, and an
+**Browse:** https://anonymous.4open.science/w/zoom-meeting-transcripts-5C1E/ (overview, and an
 Explore view that plays each meeting next to its transcript).
 
-**Pipeline that produced it:** https://github.com/smerrillunc/zoom-speaker-pipeline
+**Pipeline that produced it:** https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E
 
 ## Data layout
 

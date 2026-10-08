@@ -18,7 +18,7 @@
       <a href="./" aria-current="page">Overview</a>
       <a href="explore.html">Explore</a>
       <a href="#data">Get the data</a>
-      <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">Pipeline</a>
+      <a href="https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E">Pipeline</a>
     </nav>
   </div>
 </header>
@@ -51,7 +51,7 @@
       they are. In Zoom's gallery view, the active speaker's tile is outlined in green and
       labelled with their name. The pipeline reads that name once a second and aligns it with
       a Whisper transcript. It runs as four scripts, all in the
-      <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">pipeline repository</a>.</p>
+      <a href="https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E">pipeline repository</a>.</p>
       <div class="steps">
         <div class="step"><span class="file">ocr.py</span><h3>Read the name tile</h3><p>Find the highlighted tile in each sampled frame and read its name label with PaddleOCR.</p><span class="io">video → raw names, 1 per second</span></div>
         <div class="step"><span class="file">transcribe.py</span><h3>Transcribe the audio</h3><p>Whisper large-v2 for the words, pyannote to group the speech into voices.</p><span class="io">video → text + voice clusters</span></div>
@@ -61,7 +61,7 @@
       <p class="order">Order: <span class="mono">ocr.py</span> and <span class="mono">transcribe.py</span>
       run independently on each video. <span class="mono">clean_ocr.py</span> runs once over a whole
       collection, because it links people across meetings. <span class="mono">merge.py</span> runs last.
-      Method and measurements: <a href="https://github.com/smerrillunc/zoom-speaker-pipeline/blob/main/docs/METHOD.md">METHOD.md</a>.</p>
+      Method and measurements: <a href="https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E/docs/METHOD.md">METHOD.md</a>.</p>
     </div>
   </section>
 
@@ -102,11 +102,11 @@
     <div class="wrap">
       <h2>Get the data</h2>
       <p class="intro">Everything the site shows is plain JSON in the
-      <a href="https://github.com/smerrillunc/zoom-meeting-transcripts">site repository</a>.
+      <a href="https://anonymous.4open.science/r/zoom-meeting-transcripts-5C1E">site repository</a>.
       Clone it, or fetch single files from this site.</p>
       <div class="two">
 <pre class="code"><span class="c"># everything</span>
-git clone https://github.com/smerrillunc/zoom-meeting-transcripts
+# download the repository from https://anonymous.4open.science/r/zoom-meeting-transcripts-5C1E
 
 <span class="c"># layout</span>
 data/collections.json            <span class="c"># every collection, with statistics</span>
@@ -145,15 +145,15 @@ root = pathlib.Path(<span class="s">"zoom-meeting-transcripts/data"</span>)
       criminal defendants; some hearings concern family law and children, and dates of birth
       and phone numbers are sometimes spoken aloud. Each collection's page lists what applies
       to it. Use the data for research, and do not use it to identify or contact private
-      individuals. To request removal of a meeting, open an issue on the
-      <a href="https://github.com/smerrillunc/zoom-meeting-transcripts/issues">repository</a>.</div>
+      individuals. To request removal of a meeting, contact the authors
+      (contact details are withheld during anonymous review).</div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">Transcripts produced with the
-  <a href="https://github.com/smerrillunc/zoom-speaker-pipeline">zoom-speaker-pipeline</a>.
+  <a href="https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E">zoom-speaker-pipeline</a>.
   Collected for <i>Point of Order: Action-Aware LLM Persona Modeling for Realistic Civic
   Simulation</i>. Videos remain on their publishers' YouTube channels.</div>
 </footer>
