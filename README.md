@@ -5,10 +5,6 @@ Zoom and published on YouTube. Speakers are identified from the name Zoom prints
 the active speaker's tile, and linked to the same person across all of a body's
 meetings.
 
-**Browse:** a website that plays each meeting next to its transcript (`index.html`,
-`explore.html`) will be published with the paper. During review, browse the JSON
-directly under `data/` (layout below); every file is plain JSON.
-
 **Pipeline that produced it:** https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E
 
 ## Data layout
@@ -41,10 +37,6 @@ A transcript is a list of turns:
 | `ocr_label` | the name as OCR read it during the turn, before cleaning |
 | `text` | Whisper large-v2 transcription |
 
-Waipa District Council, DC Court of Appeals and Albemarle County School Board predate
-the raw-OCR record. They keep their original speaker labels, with `speaker_name` and
-`ocr_label` set to `null`, and carry the `tags` field from the original release.
-
 ## Please read before use
 
 These are public meetings that the bodies themselves recorded and published. Court
@@ -52,4 +44,4 @@ collections name private parties, including criminal defendants. Some hearings c
 family law and children, and dates of birth and phone numbers are sometimes spoken.
 `data/collections.json` lists what applies to each collection. Use the data for
 research, and do not use it to identify or contact private individuals. To request
-removal of a meeting, open an issue.
+removal of a meeting, contact the authors.
