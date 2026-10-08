@@ -5,8 +5,9 @@ Zoom and published on YouTube. Speakers are identified from the name Zoom prints
 the active speaker's tile, and linked to the same person across all of a body's
 meetings.
 
-**Browse:** https://anonymous.4open.science/w/zoom-meeting-transcripts-E8E1/index.html (overview, and an
-Explore view that plays each meeting next to its transcript).
+**Browse:** a website that plays each meeting next to its transcript (`index.html`,
+`explore.html`) will be published with the paper. During review, browse the JSON
+directly under `data/` (layout below); every file is plain JSON.
 
 **Pipeline that produced it:** https://anonymous.4open.science/r/zoom-speaker-pipeline-5C1E
 
